@@ -1,7 +1,6 @@
-import animalType from './schema/types/animal'
-
-const { ApolloServer, gql } = require("apollo-server");
-
+const types = require("./schema/types/animal");
+const resolvers = require("./schema/resolvers/animal");
+const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
 
 class PetFinder extends RESTDataSource {
@@ -14,29 +13,18 @@ class PetFinder extends RESTDataSource {
     request.headers.set("Authorization", this.context.token);
   }
 
-  async getPets(latitude, longitude) {
+  async getAnimals(latitude, longitude) {
     const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
     console.log(JSON.stringify(res));
     return res.animals;
   }
-
 }
-
-// Resolvers define the technique for fetching the types defined in the
-// schema. This resolver retrieves books from the "books" array above.
-const resolvers = {
-  Query: {
-    pets: async (_source, { latitude, longitude }, { dataSources }) => {
-      return dataSources.petFinderApi.getPets(latitude, longitude);
-    },
-  },
-};
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  typeDefs: types.typeDefs,
+  resolvers: resolvers.resolvers,
   dataSources: () => {
     return {
       petFinderApi: new PetFinder(),
@@ -45,7 +33,7 @@ const server = new ApolloServer({
   context: () => {
     return {
       token:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJHdUdRSmcyR09ZZ0p6NEozSlFNWnM3eEQxS0hEVFZTeVFiMFZBVnVabkdlWjlNTzVQSiIsImp0aSI6ImY0NWEyNzRjY2E5MDQwMjUyNDBmNzQ4M2MwODAyMjRmNmJkZmQyYzE4ZWJiOGUwOGI0YzA5YmE3YmMxYzNmZjBhNzM5ZTg4MDNmYzliZGNjIiwiaWF0IjoxNjA1NzMzMjA0LCJuYmYiOjE2MDU3MzMyMDQsImV4cCI6MTYwNTczNjgwNCwic3ViIjoiIiwic2NvcGVzIjpbXX0.VuBFiyrIel64Ubao-68xEFPJtyPpUJtTM2nr4S6YZiqYETQPb9TT1FIunh9Rn8QjPWA5g1l8VLzOGwpNAV8-QBfTQifqLt5AaVpI05HM23gPVDIEt6FZvHBUuW1m7wU-vNnyB9RBEjYFatU2Fn3RnkC3fhaURP5o4_Gc9coiElT5ESKIQNf5IcaUiTWnvbOc6uaxMM9efA-pbyh6ZvFoS8UGTcvSM3bnhR0u3pMm6Zd1tH-rkEQllJ4YYk2JpMYR0gVMTvXRGQvX_xUNj2PRVB_7Yx_094gZJrlnmMBVndtEidgHUs5jFicgKHEZazSklixD4PsV5HFw6Z25JbfA2Q"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJHdUdRSmcyR09ZZ0p6NEozSlFNWnM3eEQxS0hEVFZTeVFiMFZBVnVabkdlWjlNTzVQSiIsImp0aSI6IjEzNzNjMTUxZTkyZDA5Y2RlMDY2ZTlhNWM0YzJjNzc0Yjk2Y2FkN2I1NGVjMTQ1YzJhMjg4N2VlZjY3ZGUwYjI4NzA5YTQ2ODdhZWZkNDc4IiwiaWF0IjoxNjA1NzQyODk3LCJuYmYiOjE2MDU3NDI4OTcsImV4cCI6MTYwNTc0NjQ5Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.nQvgLEW5a74JxHARfQIMnw6QIQlFkbTdcDXP1D4JAXt0ar5ieF9HWdgf20DjpDPgq2_WKPy_iK23wt4HFoI2goFEYlC2LBqs1yHEqUkeuAArc5ddFz1xPhPmG4N247dO_2H-htk2R3IaDhS4fAm3yo_5d4GEUQIJrKU2O2T6DGt3yUVErsq15t2nW0siWQo-JlD6WcZq7V5bNd3mnrgALfMhhW1ns0ZI8ZkWxCMKVs7c8vVxTQI-3tpmp5SVEinMQKVJiRwQHr9j1ir1PNrKXZywoVOrIszRV3jLkIt5Iednu-uwCRTVISojeYWBaLG4m82obW6kXXxjNlNGHxbwOA",
     };
   },
 });

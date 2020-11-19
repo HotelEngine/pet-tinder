@@ -49,6 +49,7 @@ class PetFinder extends RESTDataSource {
       `v2/animals?location=${latitude},${longitude}&` + q
     );
 
+    console.log("=========request");
     console.log(JSON.stringify(res));
     return res.animals;
   }

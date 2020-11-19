@@ -1,0 +1,21 @@
+{
+  "name": "pet-tinder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "heroku-prebuild": "cd graphql && npm install",
+    "start-be": "cd graphql && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HotelEngine/pet-tinder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HotelEngine/pet-tinder/issues"
+  },
+  "homepage": "https://github.com/HotelEngine/pet-tinder#readme"
+}

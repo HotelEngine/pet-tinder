@@ -17,8 +17,6 @@ class PetFinder extends RESTDataSource {
     console.log("=========request");
     console.log(request);
     const token = await this.fetchToken();
-    console.log("=========token");
-    console.log(token);
     request.headers.set("Authorization", `Bearer ${token.access_token}`);
   }
 
@@ -35,22 +33,26 @@ class PetFinder extends RESTDataSource {
     status,
     coat
   ) {
-    let q = querystring.stringify({
-      type: type,
-      distance: distance,
-      age: age,
-      size: size,
-      status: status,
-      coat: coat,
-      breed: breed,
+    let ratingCriteria = {
+      type,
+      distance,
+      age,
+      size,
+      status,
+      coat,
+      breed,
       good_with_children: goodWithChildren,
       good_with_pets: goodWithPets,
-    });
+    };
 
-    console.log("=========request");
+    Object.keys(ratingCriteria).forEach(
+      (key) => ratingCriteria[key] == null && delete ratingCriteria[key]
+    );
+
+    const queryString = querystring.stringify({ ...ratingCriteria });
 
     const res = await this.get(
-      `v2/animals?location=${latitude},${longitude}&` + q
+      `v2/animals?location=${latitude},${longitude}&` + queryString
     );
 
     console.log(JSON.stringify(res));

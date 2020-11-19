@@ -19,7 +19,19 @@ class PetFinder extends RESTDataSource {
     request.headers.set("Authorization", `Bearer ${token.access_token}`);
   }
 
-  async getAnimals(latitude, longitude) {
+  async getAnimals(
+    latitude,
+    longitude,
+    type,
+    breed,
+    distance,
+    age,
+    size,
+    goodWithChildren,
+    goodWithPets,
+    status,
+    coat
+  ) {
     const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
     console.log(JSON.stringify(res));
     return res.animals;

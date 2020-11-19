@@ -1,5 +1,4 @@
-const { gql } = require('apollo-server');
-
+const { gql } = require("apollo-server");
 
 exports.typeDefs = gql`
   type Pagination {

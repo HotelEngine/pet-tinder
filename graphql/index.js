@@ -2,6 +2,7 @@ const types = require("./schema/types/animal");
 const resolvers = require("./schema/resolvers/animal");
 const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
+const fetch = require("node-fetch");
 
 class PetFinder extends RESTDataSource {
   constructor() {
@@ -9,14 +10,33 @@ class PetFinder extends RESTDataSource {
     this.baseURL = "https://api.petfinder.com/";
   }
 
-  willSendRequest(request) {
-    request.headers.set("Authorization", this.context.token);
+  async willSendRequest(request) {
+    console.log("=========request");
+    console.log(request);
+    const token = await this.fetchToken();
+    console.log("=========token");
+    console.log(token);
+    request.headers.set("Authorization", `Bearer ${token.access_token}`);
   }
 
   async getAnimals(latitude, longitude) {
     const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
     console.log(JSON.stringify(res));
     return res.animals;
+  }
+
+  async fetchToken() {
+    const response = await fetch("https://api.petfinder.com/v2/oauth2/token", {
+      body:
+        "grant_type=client_credentials&client_id=85M6TbfBkHBVn40fafQRe4cxhnxHNuRSsnIBY4muX0FvlGagNh&client_secret=Pjw83sPa81uzI0zS0WavXz3gAX95Fp156SJIPLor",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+    });
+
+    const token = await response.json();
+    return token;
   }
 }
 

@@ -4,6 +4,8 @@ const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
 const fetch = require("node-fetch");
 const querystring = require("querystring");
+const PET_API_KEY = process.env.PET_API_KEY;
+const PET_API_SECRET = process.env.PET_API_SECRET;
 
 class PetFinder extends RESTDataSource {
   constructor() {
@@ -33,22 +35,27 @@ class PetFinder extends RESTDataSource {
     status,
     coat
   ) {
-    // let q = querystring.stringify((location: [latitude, longitude]));
     let q = querystring.stringify({
-      location: [latitude, longitude],
+      type: type,
+      distance: distance,
+      age: age,
+      size: size,
+      status: status,
+      coat: coat,
+      breed: breed,
     });
 
-    console.log(q);
+    const res = await this.get(
+      `v2/animals?location=${latitude},${longitude}&` + q
+    );
 
-    const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
     console.log(JSON.stringify(res));
     return res.animals;
   }
 
   async fetchToken() {
     const response = await fetch("https://api.petfinder.com/v2/oauth2/token", {
-      body:
-        "grant_type=client_credentials&client_id=85M6TbfBkHBVn40fafQRe4cxhnxHNuRSsnIBY4muX0FvlGagNh&client_secret=Pjw83sPa81uzI0zS0WavXz3gAX95Fp156SJIPLor",
+      body: `grant_type=client_credentials&client_id=${PET_API_KEY}&client_secret=${PET_API_SECRET}`,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -68,12 +75,6 @@ const server = new ApolloServer({
   dataSources: () => {
     return {
       petFinderApi: new PetFinder(),
-    };
-  },
-  context: () => {
-    return {
-      token:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJHdUdRSmcyR09ZZ0p6NEozSlFNWnM3eEQxS0hEVFZTeVFiMFZBVnVabkdlWjlNTzVQSiIsImp0aSI6IjEzNzNjMTUxZTkyZDA5Y2RlMDY2ZTlhNWM0YzJjNzc0Yjk2Y2FkN2I1NGVjMTQ1YzJhMjg4N2VlZjY3ZGUwYjI4NzA5YTQ2ODdhZWZkNDc4IiwiaWF0IjoxNjA1NzQyODk3LCJuYmYiOjE2MDU3NDI4OTcsImV4cCI6MTYwNTc0NjQ5Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.nQvgLEW5a74JxHARfQIMnw6QIQlFkbTdcDXP1D4JAXt0ar5ieF9HWdgf20DjpDPgq2_WKPy_iK23wt4HFoI2goFEYlC2LBqs1yHEqUkeuAArc5ddFz1xPhPmG4N247dO_2H-htk2R3IaDhS4fAm3yo_5d4GEUQIJrKU2O2T6DGt3yUVErsq15t2nW0siWQo-JlD6WcZq7V5bNd3mnrgALfMhhW1ns0ZI8ZkWxCMKVs7c8vVxTQI-3tpmp5SVEinMQKVJiRwQHr9j1ir1PNrKXZywoVOrIszRV3jLkIt5Iednu-uwCRTVISojeYWBaLG4m82obW6kXXxjNlNGHxbwOA",
     };
   },
 });

@@ -3,6 +3,7 @@ const resolvers = require("./schema/resolvers/animal");
 const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
 const fetch = require("node-fetch");
+const querystring = require("querystring");
 const PET_API_KEY = process.env.PET_API_KEY;
 const PET_API_SECRET = process.env.PET_API_SECRET;
 
@@ -34,8 +35,24 @@ class PetFinder extends RESTDataSource {
     status,
     coat
   ) {
+    let q = querystring.stringify({
+      type: type,
+      distance: distance,
+      age: age,
+      size: size,
+      status: status,
+      coat: coat,
+      breed: breed,
+      good_with_children: goodWithChildren,
+      good_with_pets: goodWithPets,
+    });
+
     console.log("=========request");
-    const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
+
+    const res = await this.get(
+      `v2/animals?location=${latitude},${longitude}&` + q
+    );
+
     console.log(JSON.stringify(res));
     return res.animals;
   }

@@ -92,6 +92,8 @@ exports.typeDefs = gql`
     name: String
     description: String
     status: String
+    good_with_children: Boolean
+    good_with_pets: Boolean
     published_at: String
     distance: Float
     _links: Links

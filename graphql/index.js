@@ -34,6 +34,7 @@ class PetFinder extends RESTDataSource {
     status,
     coat
   ) {
+    console.log("=========request");
     const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
     console.log(JSON.stringify(res));
     return res.animals;

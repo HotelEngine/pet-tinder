@@ -107,8 +107,8 @@ exports.typeDefs = gql`
 
   type Query {
     animals(
-      latitude: Float!
-      longitude: Float!
+      latitude: Float
+      longitude: Float
       type: String
       breed: String
       distance: Int

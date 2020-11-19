@@ -4,6 +4,7 @@ const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
 const fetch = require("node-fetch");
 const querystring = require("querystring");
+const { removeEmpty } = require("./lib/utils");
 const PET_API_KEY = process.env.PET_API_KEY;
 const PET_API_SECRET = process.env.PET_API_SECRET;
 
@@ -45,15 +46,10 @@ class PetFinder extends RESTDataSource {
       good_with_pets: goodWithPets,
     };
 
-    Object.keys(ratingCriteria).forEach(
-      (key) => ratingCriteria[key] == null && delete ratingCriteria[key]
-    );
+    const sanitizedCriteria = removeEmpty(ratingCriteria);
+    const ratingCriteriaLength = Object.keys(sanitizedCriteria).length;
 
-    const queryString = querystring.stringify({ ...ratingCriteria });
-
-    const res = await this.get(
-      `v2/animals?location=${latitude},${longitude}&` + queryString
-    );
+    const res = await this.get(`v2/animals?location=${latitude},${longitude}`);
 
     console.log(JSON.stringify(res));
     return res.animals;

@@ -1,1 +1,1 @@
-web: npm start-be
+web: npm run start-be

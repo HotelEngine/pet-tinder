@@ -43,13 +43,16 @@ class PetFinder extends RESTDataSource {
       status: status,
       coat: coat,
       breed: breed,
+      good_with_children: goodWithChildren,
+      good_with_pets: goodWithPets,
     });
+
+    console.log("=========request");
 
     const res = await this.get(
       `v2/animals?location=${latitude},${longitude}&` + q
     );
 
-    console.log("=========request");
     console.log(JSON.stringify(res));
     return res.animals;
   }

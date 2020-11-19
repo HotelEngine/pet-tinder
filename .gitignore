@@ -1,5 +1,5 @@
 node_modules
-.expo/*
+.expo
 npm-debug.*
 *.jks
 *.p8
@@ -8,7 +8,12 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.env
+.extra
 
 # macOS
 .DS_Store
+
+# ide files
 .vscode
+.idea

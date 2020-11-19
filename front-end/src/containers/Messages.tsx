@@ -1,17 +1,12 @@
 import * as React from 'react';
 import styles from '../assets/styles';
 
-import { useFontProvider } from '../providers/FontProvider';
-
 import { ScrollView, Text, TouchableOpacity, ImageBackground, View, FlatList } from 'react-native';
 import Message from '../components/Message';
 import Icon from '../components/Icon';
 import Demo from '../assets/data/demo.js';
 
 const Messages = () => {
-    const { isLoaded } = useFontProvider();
-    const tindercloneIsLoaded = isLoaded('tinderclone');
-
     return (
         <ImageBackground source={require('../assets/images/bg.png')} style={styles.bg}>
             <View style={styles.containerMessages}>
@@ -19,11 +14,9 @@ const Messages = () => {
                     <View style={styles.top}>
                         <Text style={styles.title}>Messages</Text>
                         <TouchableOpacity>
-                            {tindercloneIsLoaded && (
-                                <Text style={styles.icon}>
-                                    <Icon name="optionsV" />
-                                </Text>
-                            )}
+                            <Text style={styles.icon}>
+                                <Icon name="optionsV" />
+                            </Text>
                         </TouchableOpacity>
                     </View>
 

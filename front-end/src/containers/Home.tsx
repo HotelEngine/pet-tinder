@@ -4,6 +4,7 @@ import CardStack, { Card } from 'react-native-card-stack-swiper';
 import City from '../components/City';
 import Filters from '../components/Filters';
 import CardItem from '../components/CardItem';
+import LocationInfo from '../components/LocationInfo';
 import styles from '../assets/styles';
 import Demo from '../assets/data/demo.js';
 
@@ -34,6 +35,7 @@ const Home = () => {
                     ))}
                 </CardStack>
             </View>
+            <LocationInfo />
         </ImageBackground>
     );
 };

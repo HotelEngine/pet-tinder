@@ -4,11 +4,8 @@ import styles from '../assets/styles';
 
 import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from './Icon';
-import { useFontProvider } from '../providers/FontProvider';
 
 const CardItem = ({ actions, description, image, matches, name, onPressLeft, onPressRight, status, variant }) => {
-    const { isLoaded } = useFontProvider();
-
     // Custom styling
     const fullWidth = Dimensions.get('window').width;
     const imageStyle = [
@@ -29,15 +26,13 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
         },
     ];
 
-    const tindercloneIsLoaded = isLoaded('tinderclone');
-
     return (
         <View style={styles.containerCardItem}>
             {/* IMAGE */}
             <Image source={image} style={imageStyle} />
 
             {/* MATCHES */}
-            {matches && tindercloneIsLoaded && (
+            {matches && (
                 <View style={styles.matchesCardItem}>
                     <Text style={styles.matchesTextCardItem}>
                         <Icon name="heart" /> {matches}% Match!
@@ -60,7 +55,7 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
             )}
 
             {/* ACTIONS */}
-            {actions && tindercloneIsLoaded && (
+            {actions && (
                 <View style={styles.actionsCardItem}>
                     <TouchableOpacity style={styles.miniButton}>
                         <Text style={styles.star}>

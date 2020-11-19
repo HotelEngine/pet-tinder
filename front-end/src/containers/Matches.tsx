@@ -19,7 +19,6 @@ const Matches = () => {
                             </Text>
                         </TouchableOpacity>
                     </View>
-
                     <FlatList
                         numColumns={2}
                         data={Demo}

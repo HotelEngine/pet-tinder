@@ -106,6 +106,18 @@ exports.typeDefs = gql`
   }
 
   type Query {
-    animals(latitude: Float, longitude: Float): [Animals]
+    animals(
+      latitude: Float!
+      longitude: Float!
+      type: String
+      breed: String
+      distance: Int
+      age: String
+      size: String
+      goodWithChildren: Boolean
+      goodWithPets: Boolean
+      status: String
+      coat: String
+    ): [Animals]
   }
 `;

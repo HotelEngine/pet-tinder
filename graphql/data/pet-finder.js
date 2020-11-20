@@ -72,6 +72,12 @@ class PetFinder extends RESTDataSource {
     const ratingCriteriaLength =
       Object.keys(sanitizedCriteria).length + REQUIRED_ANIMAL_ARG_NUM;
     return animals
+      .filter((res) => {
+        if (res.photos === undefined || res.photos.length == 0) {
+          return false;
+        }
+        return true;
+      })
       .map((res) => {
         let matchCount = REQUIRED_ANIMAL_ARG_NUM;
         Object.keys(sanitizedCriteria).forEach((key) => {

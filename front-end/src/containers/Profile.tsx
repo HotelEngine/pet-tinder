@@ -32,14 +32,11 @@ const Profile = () => {
                 </ImageBackground>
 
                 <ProfileItem
-                    matches={match}
-                    name={name}
-                    age={age}
-                    location={location}
-                    info1={info1}
-                    info2={info2}
-                    info3={info3}
-                    info4={info4}
+                    matches={profileData.matchRating}
+                    name={profileData.name}
+                    age={profileData.age}
+                    description={profileData.description}
+                    distance={profileData.distance}
                 />
 
                 <View style={styles.actionsProfile}>

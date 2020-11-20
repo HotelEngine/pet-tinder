@@ -2,6 +2,8 @@ import * as React from 'react';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 
+import { useLocationProvider } from './LocationProvider';
+
 interface iPetDataProviderProps {
     readonly children: React.ReactNode;
 }
@@ -119,6 +121,7 @@ export function usePetDataProvider<DEFAULT_CONTEXT>() {
 }
 
 const PetDataProvider = ({ children }: iPetDataProviderProps) => {
+    const { hasLocationPermissions, locationResult } = useLocationProvider();
     const [filtersState, setFiltersState] = React.useReducer(
         (state, newState) => ({ ...state, newState }),
         INITIAL_FILTERS_STATE
@@ -126,17 +129,30 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
     const [profileData, setProfileData]: [any, (value: any) => void] = React.useState<any>(DEFAULT_CONTEXT.profileData);
     const [searchPets, { called, data, loading }] = useLazyQuery(PETS, { errorPolicy: 'all' });
 
+    React.useEffect(() => {
+        console.log(locationResult, hasLocationPermissions);
+        if (hasLocationPermissions && locationResult && locationResult?.coords) {
+            searchPets({
+                variables: {
+                    latitude: locationResult?.coords?.latitude,
+                    longitude: locationResult?.coords?.longitude,
+                },
+            });
+        }
+    }, [hasLocationPermissions, locationResult]);
+
     const context = {
         called,
         data,
         filters: filtersState,
         loading,
-        profileData,
+        profileData: data ? data[0] : null,
         searchPets,
         setFiltersState,
         setProfileData,
     };
 
+    console.log(data);
     return <PetDataProviderContext.Provider value={context}>{children}</PetDataProviderContext.Provider>;
 };
 

@@ -60,10 +60,12 @@ class PetFinder extends RESTDataSource {
     };
 
     const sanitizedCriteria = removeEmpty(ratingCriteria);
+    let path = `v2/animals?location=${latitude},${longitude}&distance=${distance}`;
+    if (type) {
+      path = path + `&type=${type}`;
+    }
 
-    const res = await this.get(
-      `v2/animals?location=${latitude},${longitude}&distance=${distance}&type=${type}`
-    );
+    const res = await this.get(path);
 
     return this.serializedAnimalResponse(res.animals, sanitizedCriteria);
   }

@@ -16,7 +16,7 @@ Hackathon 2020 project built with Apollo GraphQL on the backend and React Mobile
 #### Sample Queries
 
 GraphQL Query:
-```
+```gql
 query Query(
   $animalsLatitude: Float,
   $animalsLongitude: Float,
@@ -49,6 +49,7 @@ query Query(
     status,
     good_with_children
   }
+  animalTypes: [Types]
 }
 ```
 

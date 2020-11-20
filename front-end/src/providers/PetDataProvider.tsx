@@ -37,6 +37,7 @@ interface iContext {
     setFiltersState: (value: iSearchFilters) => void;
     setLikedIds: (value: iSearchFilters) => void;
     setProfileData: (value: any) => void;
+    setProfileRecord: (value: any) => void;
 }
 
 const INITIAL_FILTERS_STATE: iSearchFilters = {
@@ -64,6 +65,7 @@ const DEFAULT_CONTEXT = {
     setLikedIds: () => null,
     setFiltersState: () => null,
     setProfileData: () => null,
+    setProfileRecord: () => null,
 };
 
 const PETS = gql`
@@ -137,27 +139,44 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
     const [likedIds, setLikedIds] = React.useReducer((state, { type = 'add', likedId }) => {
         return type === 'add' ? [...state, likedId] : remove(state, likedId);
     }, []);
-    const [profileData, setProfileData]: [any, (value: any) => void] = React.useState<any>(DEFAULT_CONTEXT.profileData);
+    const [profileData, setProfileData]: [any, (value: any) => void] = React.useState<any>(data?.animals[0]);
     const [searchPets, { called, data, loading, error }] = useLazyQuery(PETS, { errorPolicy: 'all' });
 
     if (error) {
         console.log('DATA QUERY ERROR: ', JSON.stringify(error, undefined, 4));
     }
 
+    function getSearchVars(searchFields) {
+        const defaultFields = {
+            latitude: locationResult?.coords?.latitude,
+            longitude: locationResult?.coords?.longitude,
+            type: '',
+        };
+        return { variables: { ...defaultFields, ...searchFields, size: 'small', coat: 'short' } };
+    }
+
+    const handleSearchPets = (searchFields) => {
+        const searchVars = getSearchVars(searchFields);
+        console.log('BUTTON REQUEST VARS', searchVars);
+        searchPets(searchVars);
+    };
+
     React.useEffect(() => {
         if (hasLocationPermissions && locationResult && locationResult?.coords) {
-            const variables = {
-                variables: {
-                    latitude: locationResult?.coords?.latitude,
-                    longitude: locationResult?.coords?.longitude,
-                    type: '',
-                },
-            };
-
-            console.log(variables);
-            searchPets(variables);
+            console.log('INITIAL REQUEST VARS', getSearchVars());
+            searchPets(getSearchVars());
         }
     }, [hasLocationPermissions, locationResult]);
+
+    function setProfileRecord(recordId) {
+        const record = data.animals.find(({ id }) => id === recordId) || profileData;
+
+        console.log(
+            'NEW PROFILE RECORD',
+            data.animals.find(({ id }) => id === recordId)
+        );
+        setProfileData(record);
+    }
 
     const context = {
         called,
@@ -166,13 +185,15 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
         likedIds,
         loading,
         error,
-        profileData: data && data.animals ? data?.animals[0] : null,
-        searchPets,
+        profileData,
+        searchPets: handleSearchPets,
         setFiltersState,
         setLikedIds,
         setProfileData,
+        setProfileRecord,
     };
 
+    console.log('PETS RESPONSE', data);
     return <PetDataProviderContext.Provider value={context}>{children}</PetDataProviderContext.Provider>;
 };
 

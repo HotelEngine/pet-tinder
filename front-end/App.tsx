@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 import styles from './src/assets/styles';
 
@@ -23,8 +23,19 @@ const App = () => {
         tinderclone: require('./src/assets/fonts/tinderclone.ttf'),
     });
 
+    const theme = {
+        ...DefaultTheme,
+        dark: false,
+        roundness: 2,
+        colors: {
+            ...DefaultTheme.colors,
+            primary: '#3498db',
+            accent: '#f1c40f',
+        },
+    };
+
     return customFontsLoaded ? (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
             <LocationProvider>
                 <DataProvider>
                     <PetDataProvider>

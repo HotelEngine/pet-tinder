@@ -1,13 +1,16 @@
 import * as React from 'react';
 import * as Font from 'expo-font';
 import styles from '../assets/styles';
+import { useNavigation } from '@react-navigation/native';
 
+import { usePetDataProvider } from '../providers/PetDataProvider';
 import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from './Icon';
 
 const CardItem = ({
     actions,
     description,
+    recordId,
     image,
     matches,
     name,
@@ -17,6 +20,8 @@ const CardItem = ({
     variant,
     error,
 }) => {
+    const navigation = useNavigation();
+    const { setProfileRecord } = usePetDataProvider();
     // Custom styling
     const fullWidth = Dimensions.get('window').width;
     const imageStyle = [
@@ -37,13 +42,19 @@ const CardItem = ({
         },
     ];
 
+    function handleProfilePress() {
+        console.log('SETTING RECORD ID OF PROFILE', recordId);
+        setProfileRecord(recordId);
+        navigation.navigate('Profile');
+    }
+
     return (
         <View style={styles.containerCardItem}>
             {image && <Image source={image} style={imageStyle} />}
             {typeof matches === 'number' && (
                 <View style={styles.matchesCardItem}>
                     <Text style={styles.matchesTextCardItem}>
-                        <Icon name="heart" /> {matches.toFixed(2)}% Match!
+                        <Icon name="heart" /> {matches.toFixed(0)}% Match!
                     </Text>
                 </View>
             )}
@@ -74,7 +85,7 @@ const CardItem = ({
                             <Icon name="like" />
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.miniButton}>
+                    <TouchableOpacity style={styles.miniButton} onPress={handleProfilePress}>
                         <Text style={styles.flash}>
                             <Icon name="flash" />
                         </Text>

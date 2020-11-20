@@ -27,7 +27,7 @@ const Filters = () => {
                             <Icon name="filter" /> Filters
                         </Text>
                     </TouchableOpacity>
-                    <SearchForm />
+                    <SearchForm closeModal={handleFiltersPress} />
                 </View>
             </FormSearchModal>
         </>

@@ -12,7 +12,7 @@ const Home = () => {
     const swiperRef = React.useRef({ swipeLeft: () => null, swipeRight: () => null });
     const { called, data, loading, error } = usePetDataProvider();
 
-    const renderCard = ({ photos, name, description, matchRating }: { [key: string]: any }, index: number) => {
+    const renderCard = ({ id, photos, name, description, matchRating }: { [key: string]: any }, index: number) => {
         const image = photos && photos.length && photos[0] ? photos[0].medium : undefined;
 
         function getImage() {
@@ -36,6 +36,7 @@ const Home = () => {
             <Card key={index}>
                 <CardItem
                     image={getImage()}
+                    recordId={id}
                     name={name}
                     error={error}
                     description={description}

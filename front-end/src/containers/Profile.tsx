@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from '../assets/styles';
-
+import { useNavigation } from '@react-navigation/native';
 import { usePetDataProvider } from '../providers/PetDataProvider';
 
 import { ScrollView, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
@@ -8,24 +8,17 @@ import ProfileItem from '../components/ProfileItem';
 import Icon from '../components/Icon';
 
 const Profile = () => {
-    const { profileData } = usePetDataProvider();
-    const photos = profileData.photos[0];
-    const photoKeys = Object.keys(photos).filter(key => {
-        if (key == '__typename') {
-            return false;
-        }
-        return true;
-    });
-
-    const photoURL = photos[photoKeys[0]];
-    const image = { uri: photoURL };
+    const navigation = useNavigation();
+    const { profileData = {} } = usePetDataProvider();
+    const { matchRating, name, age, description, photos, distance, gender, size, status } = profileData || {};
+    const image = { uri: photos && photos?.length && photos[0] ? photos[0].medium : undefined };
 
     return (
         <ImageBackground source={require('../assets/images/bg.png')} style={styles.bg}>
             <ScrollView style={styles.containerProfile}>
                 <ImageBackground source={image} style={styles.photo}>
                     <View style={styles.top}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Explore')}>
                             <Text style={styles.topIconLeft}>
                                 <Icon name="chevronLeft" />
                             </Text>
@@ -40,14 +33,14 @@ const Profile = () => {
                 </ImageBackground>
 
                 <ProfileItem
-                    matches={profileData.matchRating}
-                    name={profileData.name}
-                    age={profileData.age}
-                    description={profileData.description}
-                    distance={profileData.distance}
-                    gender={profileData.gender}
-                    size={profileData.size}
-                    status={profileData.status}
+                    matches={matchRating}
+                    name={name}
+                    age={age}
+                    description={description}
+                    distance={distance}
+                    gender={gender}
+                    size={size}
+                    status={status}
                 />
 
                 <View style={styles.actionsProfile}>

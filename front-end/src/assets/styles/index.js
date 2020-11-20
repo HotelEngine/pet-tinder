@@ -21,6 +21,15 @@ const DIMENSION_WIDTH = Dimensions.get('window').width;
 const DIMENSION_HEIGHT = Dimensions.get('window').height;
 
 export default StyleSheet.create({
+	searchForm: {
+		flex: 1,
+		width: DIMENSION_WIDTH,
+		padding: 20,
+		zIndex: 1000,
+	},
+	searchFormMenu: {
+		marginBottom: 8,
+	},
 	error: {
 		zIndex: 1000,
 		position: 'absolute',

@@ -60,6 +60,7 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
                 newCity = rGeocode[0].city || state.city;
             }
 
+            console.log({ newCity });
             if (state.city !== newCity) {
                 setState({ city: newCity });
             }
@@ -82,6 +83,7 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
 
             let location = await Location.getCurrentPositionAsync({});
 
+            console.log({ location });
             newState.locationResult = location;
 
             // Center the map on the location we just fetched.

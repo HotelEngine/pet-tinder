@@ -21,6 +21,17 @@ const DIMENSION_WIDTH = Dimensions.get('window').width;
 const DIMENSION_HEIGHT = Dimensions.get('window').height;
 
 export default StyleSheet.create({
+	error: {
+		zIndex: 1000,
+		position: 'absolute',
+		width: DIMENSION_WIDTH - 10,
+		height: DIMENSION_HEIGHT - 250,
+		top: 100,
+		padding: 20,
+	},
+	homeContainer: {
+		flex: 1,
+	},
 	// COMPONENT - CARD ITEM
 	containerCardItem: {
 		backgroundColor: WHITE,
@@ -31,7 +42,7 @@ export default StyleSheet.create({
 		shadowRadius: 10,
 		shadowColor: BLACK,
 		shadowOffset: { height: 0, width: 0 },
-		height: DIMENSION_HEIGHT - 190,
+		flex: 1,
 		position: 'relative',
 	},
 	matchesCardItem: {

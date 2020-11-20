@@ -30,6 +30,6 @@
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "description": "React native app that searches a pet database to assist users in finding a pet. This is a work in progress and needs a lot of work."
+    "description": "React native app that searches a pet database to assist users in finding a pet"
   }
 }

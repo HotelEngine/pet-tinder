@@ -131,16 +131,24 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
         INITIAL_FILTERS_STATE
     );
     const [profileData, setProfileData]: [any, (value: any) => void] = React.useState<any>(DEFAULT_CONTEXT.profileData);
-    const [searchPets, { called, data, loading }] = useLazyQuery(PETS, { errorPolicy: 'all' });
+    const [searchPets, { called, data, loading, error }] = useLazyQuery(PETS, { errorPolicy: 'all' });
+
+    if (error) {
+        console.log('DATA QUERY ERROR: ', JSON.stringify(error, undefined, 4));
+    }
 
     React.useEffect(() => {
         if (hasLocationPermissions && locationResult && locationResult?.coords) {
-            searchPets({
+            const variables = {
                 variables: {
                     latitude: locationResult?.coords?.latitude,
                     longitude: locationResult?.coords?.longitude,
+                    type: '',
                 },
-            });
+            };
+
+            console.log(variables);
+            searchPets(variables);
         }
     }, [hasLocationPermissions, locationResult]);
 
@@ -149,6 +157,7 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
         data: data?.animals || [],
         filters: filtersState,
         loading,
+        error,
         profileData: data && data.animals ? data?.animals[0] : null,
         searchPets,
         setFiltersState,

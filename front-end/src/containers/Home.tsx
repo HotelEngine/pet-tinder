@@ -1,17 +1,41 @@
 import * as React from 'react';
-import { View, ImageBackground } from 'react-native';
+import { Text, View, ImageBackground } from 'react-native';
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import City from '../components/City';
 import Filters from '../components/Filters';
 import CardItem from '../components/CardItem';
-import LocationInfo from '../components/LocationInfo';
 import styles from '../assets/styles';
-import Demo from '../assets/data/demo.js';
+import LoadingView from 'react-native-loading-view';
+import { usePetDataProvider } from '../providers/PetDataProvider';
 
 const Home = () => {
-    const swiperRef = React.useRef(null);
+    const swiperRef = React.useRef({ swipeLeft: () => null, swipeRight: () => null });
+    const { called, data, loading } = usePetDataProvider();
 
-    return (
+    const renderCard = ({ photos, name, description }, index) => {
+        const image = photos && photos.length && photos[0] ? photos[0].medium : undefined;
+
+        return (
+            <Card key={index}>
+                <CardItem
+                    image={{ uri: image }}
+                    name={name}
+                    description={description}
+                    matches={90}
+                    actions
+                    onPressLeft={() => swiperRef.current.swipeLeft()}
+                    onPressRight={() => swiperRef.current.swipeRight()}
+                />
+            </Card>
+        );
+    };
+
+    if (called && data && data?.length) console.log(data[0].photos[0].medium);
+    return loading || !called || !data || !data?.length ? (
+        <LoadingView loading={true}>
+            <Text>Loading animals...</Text>
+        </LoadingView>
+    ) : (
         <ImageBackground source={require('../assets/images/bg.png')} style={styles.bg}>
             <View style={styles.containerHome}>
                 <View style={styles.top}>
@@ -20,22 +44,9 @@ const Home = () => {
                 </View>
 
                 <CardStack loop={true} verticalSwipe={false} renderNoMoreCards={() => null} ref={swiperRef}>
-                    {Demo.map((item, index) => (
-                        <Card key={index}>
-                            <CardItem
-                                image={item.image}
-                                name={item.name}
-                                description={item.description}
-                                matches={item.match}
-                                actions
-                                onPressLeft={() => swiperRef.current.swipeLeft()}
-                                onPressRight={() => swiperRef.current.swipeRight()}
-                            />
-                        </Card>
-                    ))}
+                    {data.map(renderCard)}
                 </CardStack>
             </View>
-            <LocationInfo />
         </ImageBackground>
     );
 };

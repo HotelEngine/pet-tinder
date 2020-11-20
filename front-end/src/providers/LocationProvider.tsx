@@ -84,7 +84,6 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
         getLocationAsync();
     }, []);
 
-    console.log(state);
     return <LocationContext.Provider value={state}>{children}</LocationContext.Provider>;
 };
 

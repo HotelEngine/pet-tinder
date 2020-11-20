@@ -130,7 +130,6 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
     const [searchPets, { called, data, loading }] = useLazyQuery(PETS, { errorPolicy: 'all' });
 
     React.useEffect(() => {
-        console.log(locationResult, hasLocationPermissions);
         if (hasLocationPermissions && locationResult && locationResult?.coords) {
             searchPets({
                 variables: {
@@ -143,16 +142,15 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
 
     const context = {
         called,
-        data,
+        data: data?.animals || [],
         filters: filtersState,
         loading,
-        profileData: data ? data[0] : null,
+        profileData: data && data.animals ? data?.animals[0] : null,
         searchPets,
         setFiltersState,
         setProfileData,
     };
 
-    console.log(data);
     return <PetDataProviderContext.Provider value={context}>{children}</PetDataProviderContext.Provider>;
 };
 

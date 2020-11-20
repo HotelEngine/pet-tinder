@@ -29,7 +29,7 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
     return (
         <View style={styles.containerCardItem}>
             {/* IMAGE */}
-            <Image source={image} style={imageStyle} />
+            {image && <Image source={image} style={imageStyle} />}
 
             {/* MATCHES */}
             {matches && (
@@ -64,14 +64,14 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={() => onPressLeft()}>
-                        <Text style={styles.like}>
-                            <Icon name="like" />
+                        <Text style={styles.dislike}>
+                            <Icon name="dislike" />
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={() => onPressRight()}>
-                        <Text style={styles.dislike}>
-                            <Icon name="dislike" />
+                        <Text style={styles.like}>
+                            <Icon name="like" />
                         </Text>
                     </TouchableOpacity>
 

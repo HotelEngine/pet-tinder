@@ -1,13 +1,14 @@
-const types = require("./schema/types/animal");
-const resolvers = require("./schema/resolvers/animal");
 const { ApolloServer } = require("apollo-server");
 const PetFinder = require("./data/pet-finder");
+const { animalTypesTypeDefs } = require("./schema/types/animalTypes");
+const { animalTypeDefs } = require("./schema/types/animals");
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
+const { animalResolvers } = require("./schema/resolvers/animals");
+const { animalTypeResolvers } = require("./schema/resolvers/animalTypes");
+
 const server = new ApolloServer({
-  typeDefs: types.typeDefs,
-  resolvers: resolvers.resolvers,
+  typeDefs: [animalTypesTypeDefs, animalTypeDefs],
+  resolvers: [animalResolvers, animalTypeResolvers],
   dataSources: () => {
     return {
       petFinderApi: new PetFinder(),
@@ -15,7 +16,6 @@ const server = new ApolloServer({
   },
 });
 
-// The `listen` method launches a web server.
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });

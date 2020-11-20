@@ -1,4 +1,4 @@
-exports.resolvers = {
+exports.animalResolvers = {
   Query: {
     animals: async (
       _source,

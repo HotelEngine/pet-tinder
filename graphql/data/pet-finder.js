@@ -30,6 +30,11 @@ class PetFinder extends RESTDataSource {
     return token;
   }
 
+  async getAnimalTypes() {
+    const res = await this.get("v2/types");
+    return res.types;
+  }
+
   async getAnimals(
     latitude,
     longitude,

@@ -1,6 +1,6 @@
 const { gql } = require("apollo-server");
 
-exports.typeDefs = gql`
+exports.animalTypeDefs = gql`
   type Pagination {
     count_per_page: Int
     total_count: Int
@@ -16,14 +16,9 @@ exports.typeDefs = gql`
     href: String
   }
 
-  type Self {
-    href: String
-  }
-
   type Links {
     organization: Organization
     type: Type
-    self: Self
   }
 
   type Address {
@@ -122,5 +117,7 @@ exports.typeDefs = gql`
       status: String
       coat: String
     ): [Animals]
+
+    animalTypes: [Types]
   }
 `;

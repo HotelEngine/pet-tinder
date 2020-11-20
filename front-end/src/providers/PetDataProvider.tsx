@@ -113,6 +113,7 @@ const PETS = gql`
                 medium
                 large
             }
+            matchRating
         }
     }
 `;

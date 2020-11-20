@@ -5,7 +5,18 @@ import styles from '../assets/styles';
 import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import Icon from './Icon';
 
-const CardItem = ({ actions, description, image, matches, name, onPressLeft, onPressRight, status, variant }) => {
+const CardItem = ({
+    actions,
+    description,
+    image,
+    matches,
+    name,
+    onPressLeft,
+    onPressRight,
+    status,
+    variant,
+    error,
+}) => {
     // Custom styling
     const fullWidth = Dimensions.get('window').width;
     const imageStyle = [
@@ -28,35 +39,24 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
 
     return (
         <View style={styles.containerCardItem}>
-            {/* IMAGE */}
             {image && <Image source={image} style={imageStyle} />}
-
-            {/* MATCHES */}
-            {matches && (
+            {typeof matches === 'number' && (
                 <View style={styles.matchesCardItem}>
                     <Text style={styles.matchesTextCardItem}>
-                        <Icon name="heart" /> {matches}% Match!
+                        <Icon name="heart" /> {matches.toFixed(2)}% Match!
                     </Text>
                 </View>
             )}
-
-            {/* NAME */}
             <Text style={nameStyle} numberOfLines={1}>
                 {name}
             </Text>
-
-            {/* DESCRIPTION */}
             {description && <Text style={styles.descriptionCardItem}>{description || ' '}</Text>}
-
-            {/* STATUS */}
             {status && (
                 <View style={styles.status}>
                     <View style={status === 'Online' ? styles.online : styles.offline} />
                     <Text style={styles.statusText}>{status}</Text>
                 </View>
             )}
-
-            {/* ACTIONS */}
             {actions && (
                 <View style={styles.actionsCardItem}>
                     <TouchableOpacity style={styles.miniButton}>
@@ -64,19 +64,16 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
                             <Icon name="star" />
                         </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.button} onPress={() => onPressLeft()}>
                         <Text style={styles.dislike}>
                             <Icon name="dislike" />
                         </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.button} onPress={() => onPressRight()}>
                         <Text style={styles.like}>
                             <Icon name="like" />
                         </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.miniButton}>
                         <Text style={styles.flash}>
                             <Icon name="flash" />

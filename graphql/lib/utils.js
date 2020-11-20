@@ -1,5 +1,3 @@
-const { REQUIRED_ANIMAL_ARG_NUM } = require("../constants");
-
 module.exports.removeEmpty = (obj) => {
   const newObj = {};
 
@@ -12,28 +10,4 @@ module.exports.removeEmpty = (obj) => {
   });
 
   return newObj;
-};
-
-module.exports.serializedAnimalResponse = (animals, sanitizedCriteria) => {
-  const ratingCriteriaLength =
-    Object.keys(sanitizedCriteria).length + REQUIRED_ANIMAL_ARG_NUM;
-  return animals
-    .map((res) => {
-      let matchCount = REQUIRED_ANIMAL_ARG_NUM;
-      Object.keys(sanitizedCriteria).forEach((key) => {
-        res[key]
-          ? res[key].toLowerCase() === sanitizedCriteria[key]
-            ? matchCount++
-            : null
-          : null;
-      });
-      return {
-        ...res,
-        matchRating:
-          matchCount > 0 ? (matchCount / ratingCriteriaLength) * 100 : 0,
-      };
-    })
-    .sort((a, b) => {
-      return b.matchRating - a.matchRating;
-    });
 };

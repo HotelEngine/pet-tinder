@@ -14,23 +14,14 @@ interface iMapRegion {
 
 interface iState {
     hasLocationPermissions?: boolean;
-    locationResult?: {
-        coords: {
-            altitude: number | null;
-            altitudeAccuracy: number | null;
-            latitude: number | null;
-            accuracy: number | null;
-            longitude: number | null;
-            heading: number | null;
-            speed: number | null;
-        };
-        timestamp: number | null;
-    } | null;
+    locationResult?: any;
     locationStatus: string | null;
     mapRegion: iMapRegion;
+    city: 'Earth' | null;
 }
 
 const INITIAL_STATE = {
+    city: 'Earth',
     hasLocationPermissions: false,
     locationResult: null,
     locationStatus: null,
@@ -42,9 +33,9 @@ const INITIAL_STATE = {
     },
 };
 
-const LocationContext = React.createContext(INITIAL_STATE);
+const LocationContext = React.createContext({ ...INITIAL_STATE, city: null });
 
-export function useLocationProvider<INITIAL_STATE>() {
+export function useLocationProvider<iState>() {
     return React.useContext(LocationContext);
 }
 
@@ -53,6 +44,29 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
         (state: iState, newState: iState) => ({ ...state, ...newState }),
         INITIAL_STATE
     );
+
+    // get the city
+    React.useEffect(() => {
+        const getCity = async () => {
+            const { hasLocationPermissions, locationResult } = state;
+            let newCity = 'Earth';
+
+            if (hasLocationPermissions && locationResult.coords?.longitude && locationResult.coords?.longitude) {
+                const rGeocode = await Location.reverseGeocodeAsync({
+                    latitude: locationResult.coords?.latitude,
+                    longitude: locationResult.coords?.longitude,
+                });
+
+                newCity = rGeocode[0].city || state.city;
+            }
+
+            if (state.city !== newCity) {
+                setState({ city: newCity });
+            }
+        };
+
+        getCity();
+    }, [state]);
 
     // Set state with location results and map region if possible.
     React.useEffect(() => {
@@ -67,6 +81,7 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
             }
 
             let location = await Location.getCurrentPositionAsync({});
+
             newState.locationResult = location;
 
             // Center the map on the location we just fetched.
@@ -84,7 +99,7 @@ const LocationProvider = ({ children }: ILocationProviderProps) => {
         getLocationAsync();
     }, []);
 
-    return <LocationContext.Provider value={state}>{children}</LocationContext.Provider>;
+    return <LocationContext.Provider value={{ ...state }}>{children}</LocationContext.Provider>;
 };
 
 export default LocationProvider;

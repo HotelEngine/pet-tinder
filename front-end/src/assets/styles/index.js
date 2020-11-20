@@ -31,6 +31,8 @@ export default StyleSheet.create({
 		shadowRadius: 10,
 		shadowColor: BLACK,
 		shadowOffset: { height: 0, width: 0 },
+		height: DIMENSION_HEIGHT - 190,
+		position: 'relative',
 	},
 	matchesCardItem: {
 		marginTop: -35,
@@ -45,7 +47,11 @@ export default StyleSheet.create({
 	},
 	descriptionCardItem: {
 		color: GRAY,
-		textAlign: 'center',
+		flex: 1,
+		textAlign: 'left',
+		height: 72,
+		paddingLeft: 20,
+		paddingRight: 20,
 	},
 	status: {
 		paddingBottom: 10,
@@ -74,6 +80,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingVertical: 30,
+		bottom: 0,
 	},
 	button: {
 		width: 60,
@@ -125,7 +132,7 @@ export default StyleSheet.create({
 		backgroundColor: WHITE,
 		padding: 10,
 		borderRadius: 20,
-		width: 90,
+		minWidth: 90,
 		shadowOpacity: 0.05,
 		shadowRadius: 10,
 		shadowColor: BLACK,
@@ -142,7 +149,7 @@ export default StyleSheet.create({
 		backgroundColor: WHITE,
 		padding: 10,
 		borderRadius: 20,
-		width: 70,
+		minWidth: 70,
 		shadowOpacity: 0.05,
 		shadowRadius: 10,
 		shadowColor: BLACK,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-test",
-    "slug": "rn-test",
+    "name": "PetTinder",
+    "slug": "pettinder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -29,6 +29,7 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": "React native app that searches a pet database to assist users in finding a pet. This is a work in progress and needs a lot of work."
   }
 }

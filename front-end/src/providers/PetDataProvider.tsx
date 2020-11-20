@@ -105,6 +105,9 @@ const PETS = gql`
             contact {
                 email
                 phone
+                address {
+                    city
+                }
             }
             photos {
                 medium

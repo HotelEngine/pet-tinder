@@ -12,7 +12,7 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
         {
             borderRadius: 8,
             width: variant ? fullWidth / 2 - 30 : fullWidth - 80,
-            height: variant ? 170 : 350,
+            height: variant ? 150 : 296,
             margin: variant ? 0 : 20,
         },
     ];
@@ -41,10 +41,12 @@ const CardItem = ({ actions, description, image, matches, name, onPressLeft, onP
             )}
 
             {/* NAME */}
-            <Text style={nameStyle}>{name}</Text>
+            <Text style={nameStyle} numberOfLines={1}>
+                {name}
+            </Text>
 
             {/* DESCRIPTION */}
-            {description && <Text style={styles.descriptionCardItem}>{description}</Text>}
+            {description && <Text style={styles.descriptionCardItem}>{description || ' '}</Text>}
 
             {/* STATUS */}
             {status && (

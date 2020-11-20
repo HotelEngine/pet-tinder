@@ -15,7 +15,7 @@ const Profile = () => {
     return (
         <ImageBackground source={require('../assets/images/bg.png')} style={styles.bg}>
             <ScrollView style={styles.containerProfile}>
-                <ImageBackground source={image} style={styles.photo}>
+                <ImageBackground source={profileData.photos.medium} style={styles.photo}>
                     <View style={styles.top}>
                         <TouchableOpacity>
                             <Text style={styles.topIconLeft}>
@@ -37,6 +37,9 @@ const Profile = () => {
                     age={profileData.age}
                     description={profileData.description}
                     distance={profileData.distance}
+                    gender={profileData.gender}
+                    size={profileData.size}
+                    status={profileData.status}
                 />
 
                 <View style={styles.actionsProfile}>

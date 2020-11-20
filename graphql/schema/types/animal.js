@@ -114,7 +114,7 @@ exports.typeDefs = gql`
       longitude: Float!
       type: String
       breed: String
-      distance: Int
+      distance: Int = 10
       age: String
       size: String
       goodWithChildren: Boolean

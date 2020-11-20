@@ -6,16 +6,24 @@ import { usePetDataProvider } from '../providers/PetDataProvider';
 import { ScrollView, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import ProfileItem from '../components/ProfileItem';
 import Icon from '../components/Icon';
-import Demo from '../assets/data/demo.js';
 
 const Profile = () => {
-    const { age, image, info1, info2, info3, info4, location, match, name } = Demo[7];
     const { profileData } = usePetDataProvider();
+    const photos = profileData.photos[0];
+    const photoKeys = Object.keys(photos).filter(key => {
+        if (key == '__typename') {
+            return false;
+        }
+        return true;
+    });
+
+    const photoURL = photos[photoKeys[0]];
+    const image = { uri: photoURL };
 
     return (
         <ImageBackground source={require('../assets/images/bg.png')} style={styles.bg}>
             <ScrollView style={styles.containerProfile}>
-                <ImageBackground source={profileData.photos.medium} style={styles.photo}>
+                <ImageBackground source={image} style={styles.photo}>
                     <View style={styles.top}>
                         <TouchableOpacity>
                             <Text style={styles.topIconLeft}>

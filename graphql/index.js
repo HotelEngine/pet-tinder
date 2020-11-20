@@ -50,7 +50,7 @@ class PetFinder extends RESTDataSource {
       Object.keys(sanitizedCriteria).length + REQUIRED_ARG_NUM;
 
     const res = await this.get(
-      `v2/animals?location=${latitude},${longitude}&distance=${distance}`
+      `v2/animals?location=${latitude},${longitude}&distance=${distance}&type=${type}`
     );
 
     const serializedResponse = res.animals.map((res) => {

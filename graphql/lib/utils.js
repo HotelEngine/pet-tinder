@@ -3,9 +3,9 @@ module.exports.removeEmpty = (obj) => {
 
   Object.keys(obj).forEach((key) => {
     if (obj[key] && typeof obj[key] === "object") {
-      newObj[key] = removeEmpty(obj[key]); // recurse
+      newObj[key] = removeEmpty(obj[key]);
     } else if (obj[key] != null) {
-      newObj[key] = obj[key]; // copy value
+      newObj[key] = obj[key];
     }
   });
 

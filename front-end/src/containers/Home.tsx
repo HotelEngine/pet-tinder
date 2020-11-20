@@ -21,7 +21,7 @@ const Home = () => {
             if (photos?.length) {
                 const photo = photos[0];
                 const photoKeys = Object.keys(photo);
-                console.log({ photoKeys, photo });
+
                 if (photoKeys.includes('medium')) {
                     responsePhoto = photo.medium;
                 } else {

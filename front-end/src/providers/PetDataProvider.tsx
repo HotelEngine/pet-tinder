@@ -1,6 +1,7 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
+import { remove } from 'lodash';
 
 import { useLocationProvider } from './LocationProvider';
 
@@ -34,6 +35,7 @@ interface iContext {
     profileData: any;
     searchPets: (value: { variables: iSearchFilters; pollingInterval?: number; errorPolicy: 'all' }) => void;
     setFiltersState: (value: iSearchFilters) => void;
+    setLikedIds: (value: iSearchFilters) => void;
     setProfileData: (value: any) => void;
 }
 
@@ -55,9 +57,11 @@ const DEFAULT_CONTEXT = {
     called: false,
     data: [],
     filters: INITIAL_FILTERS_STATE,
+    likedIds: [],
     loading: false,
     profileData: null,
     searchPets: () => null,
+    setLikedIds: () => null,
     setFiltersState: () => null,
     setProfileData: () => null,
 };
@@ -130,6 +134,9 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
         (state, newState) => ({ ...state, newState }),
         INITIAL_FILTERS_STATE
     );
+    const [likedIds, setLikedIds] = React.useReducer((state, { type = 'add', likedId }) => {
+        return type === 'add' ? [...state, likedId] : remove(state, likedId);
+    }, []);
     const [profileData, setProfileData]: [any, (value: any) => void] = React.useState<any>(DEFAULT_CONTEXT.profileData);
     const [searchPets, { called, data, loading, error }] = useLazyQuery(PETS, { errorPolicy: 'all' });
 
@@ -156,11 +163,13 @@ const PetDataProvider = ({ children }: iPetDataProviderProps) => {
         called,
         data: data?.animals || [],
         filters: filtersState,
+        likedIds,
         loading,
         error,
         profileData: data && data.animals ? data?.animals[0] : null,
         searchPets,
         setFiltersState,
+        setLikedIds,
         setProfileData,
     };
 

@@ -19,11 +19,11 @@ const ProfileItem = ({ matches, name, age, description, distance, gender, size, 
 
             <Text style={styles.descriptionProfileItem}>Distance: {distance.toFixed(1)} miles</Text>
 
-            <View style={styles.info}>
+            <View style={(styles.info, { flexDirection: 'row' })}>
                 <Text style={styles.iconProfile}>
                     <Icon name="circle" />
                 </Text>
-                <Text style={styles.infoContent}>{description}</Text>
+                <Text style={{ flex: 1, flexWrap: 'wrap' }}>{description}</Text>
             </View>
 
             <View style={styles.info}>

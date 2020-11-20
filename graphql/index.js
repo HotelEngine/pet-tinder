@@ -3,10 +3,8 @@ const resolvers = require("./schema/resolvers/animal");
 const { ApolloServer } = require("apollo-server");
 const { RESTDataSource } = require("apollo-datasource-rest");
 const fetch = require("node-fetch");
-const { removeEmpty } = require("./lib/utils");
-const PET_API_KEY = process.env.PET_API_KEY;
-const PET_API_SECRET = process.env.PET_API_SECRET;
-const REQUIRED_ARG_NUM = 2;
+const { removeEmpty, serializedAnimalResponse } = require("./lib/utils");
+const { PET_API_KEY, PET_API_SECRET } = require("./constants");
 
 class PetFinder extends RESTDataSource {
   constructor() {
@@ -46,32 +44,12 @@ class PetFinder extends RESTDataSource {
     };
 
     const sanitizedCriteria = removeEmpty(ratingCriteria);
-    const ratingCriteriaLength =
-      Object.keys(sanitizedCriteria).length + REQUIRED_ARG_NUM;
 
     const res = await this.get(
       `v2/animals?location=${latitude},${longitude}&distance=${distance}&type=${type}`
     );
 
-    const serializedResponse = res.animals.map((res) => {
-      let matchCount = REQUIRED_ARG_NUM;
-      Object.keys(sanitizedCriteria).forEach((key) => {
-        res[key]
-          ? res[key].toLowerCase() === sanitizedCriteria[key]
-            ? matchCount++
-            : null
-          : null;
-      });
-      return {
-        ...res,
-        matchRating:
-          matchCount > 0 ? (matchCount / ratingCriteriaLength) * 100 : 0,
-      };
-    });
-
-    return serializedResponse.sort((a, b) => {
-      return b.matchRating - a.matchRating;
-    });
+    return serializedAnimalResponse(res.animals, sanitizedCriteria);
   }
 
   async fetchToken() {
